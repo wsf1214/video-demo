@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>flv播放器demo</title>
+	<script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src="js/flv.min.js" type="text/javascript" charset="utf-8"></script>-->
+</head>
+
+<body>
+	<div>
+		<video #videoelement id="videoElement" controls="controls" autoplay="autoplay" style="width:100%;height:400px ;">Your
+			browser is too old to support HTML5 video.</video>
+		<button onclick="play()">开始</button>
+		<button onclick="pause()">暂停</button>
+		<button onclick="change('0089000AB1')">0089000AB1太子庙</button>
+		<button onclick="change('00890009FA')">00890009FA汉南尾</button>
+	</div>
+</body>
+<script type="text/javascript">
+	/**
+	 * 官方参考demo链接：http://bilibili.github.io/flv.js/demo/
+	 */
+	let flvPlayer, player;
+	window.onload = function () {
+		// initFlvPlayer();
+	}
+	/**
+	 * 初始化播放器
+	 */
+	function initFlvPlayer(url) {
+		if (!url) {
+			url = 'http://114.119.8.240:12060/live.flv?devid=0089000AB1&chl=1&st=0&isaudio=1'
+		}
+		player = document.getElementById('videoElement');
+		if (flvjs.isSupported()) {
+			// 创建flvjs对象
+			flvPlayer = flvjs.createPlayer({
+				type: 'flv', // 指定视频类型
+				isLive: true, // 开启直播
+				hasAudio: false, // 关闭声音
+				cors: true, // 开启跨域访问
+				url, // 指定流链接
+			});
+			// 将flvjs对象和DOM对象绑定
+			flvPlayer.attachMediaElement(player);
+			// 加载视频
+			flvPlayer.load();
+			flvPlayer.onload = function (e) {
+				console.log(e);
+			}
+			// 播放视频
+			flvPlayer.play();
+		}
+	}
+	function change(code) {
+		let url = "http://114.119.8.240:12060/live.flv?devid=" + code + "&chl=1&st=0&isaudio=1"
+		initFlvPlayer(url)
+	}
+	/**
+	 * 开始
+	 */
+	function play() {
+		flvPlayer.play();
+	}
+	/**
+	 * 暂停
+	 */
+	function pause() {
+		flvPlayer.pause();
+	}
+	/**
+	 * 销毁
+	 */
+	function destroy() {
+		flvPlayer.destroy();
+	}
+</script>
+
+</html>

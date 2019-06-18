@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Hls播放器demo</title>
+	<script src="https://cdn.bootcss.com/hls.js/8.0.0-beta.3/hls.min.js"></script>
+	<!--<script src="js/hls.min.js" type="text/javascript" charset="utf-8"></script>-->
+</head>
+
+<body>
+	<div>
+		<video #videoelement id="videoElement" controls="controls" autoplay="autoplay" style="width:100%;height:720px ;">Your
+			browser is too old to support HTML5 video.</video>
+	</div>
+</body>
+<script type="text/javascript">
+	/**
+	 * 官方参考demo链接：https://hls-js-latest.netlify.com/demo
+	 */
+	window.onload = function () {
+		initHlsPlayer();
+	}
+	let hls;
+	//初始化视频播放器
+	function initHlsPlayer() {
+		let url = "http://ivi.bupt.edu.cn/hls/cctv5phd.m3u8";
+		var video = document.getElementById('videoElement');
+		if (Hls.isSupported()) {
+			hls = new Hls();
+			hls.loadSource(url);
+			hls.attachMedia(video);
+		}
+		else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+			video.src = url;
+			video.addEventListener('loadedmetadata', function () {
+				video.play();
+			});
+		}
+	}
+	function destroy(){
+		hls.destroy();//销毁
+	}
+</script>
+
+</html>
